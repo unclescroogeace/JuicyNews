@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "EditNews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditNews</h2>
+
+@{
+    DataAccess.Entity.News news = (DataAccess.Entity.News)ViewData["editNews"];
+}
+<form action="/News/EditNews" method="post">
+    <input type="hidden" name="Id" value="@news.Id" />
+    <input type="hidden" name="DateOfPublishing" value="@news.DateOfPublishing" />
+    <fieldset>
+        <legend>Edit News</legend>
+        <table>
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="Title" value="@news.Title" /></td>
+            </tr>
+            <tr>
+                <td>Content</td>
+                <td><textarea name="Content">@news.Content</textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Save" />&nbsp;&nbsp;&nbsp;<a href="/News/Index">Cancel</a></td>
+            </tr>
+        </table>
+    </fieldset>
+</form>

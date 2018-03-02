@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="/Home/Login" method="post">
+    <fieldset>
+        <legend>Login</legend>
+        @Html.ValidationMessage("authenticationFailed")
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td><input type="text" name="username" /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" name="password" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Login" /></td>
+            </tr>
+        </table>
+    </fieldset>
+</form>

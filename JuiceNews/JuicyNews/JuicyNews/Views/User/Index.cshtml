@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Manage Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Manage Users</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Username
+        </th>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Registration Date
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Administrator
+        </th>
+        <th>
+
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var user in (List<DataAccess.Entity.User>)ViewData["users"])
+    {
+        var editLink = "/User/EditUser?id=" + user.Id;
+        var deleteLink = "/User/DeleteUser?id=" + user.Id;
+        <tr>
+            <td>
+                @user.Username
+            </td>
+            <td>
+                @user.FirstName
+            </td>
+            <td>
+                @user.LastName
+            </td>
+            <td>
+                @user.Email
+            </td>
+            <td>
+                @user.RegistrationDate
+            </td>
+            <td>
+                @if (user.Status)
+                {
+                    <div>Online</div>
+                }
+                else
+                {
+                    <div>Offline</div>
+                }
+            </td>
+            <td>
+                @if (user.IsAdministrator)
+                {
+                    <div>Yes</div>
+                }
+                else
+                {
+                    <div>No</div>
+                }
+            </td>
+            <td>
+                <a href="@editLink">Edit</a>
+            </td>
+            <td><a href="@deleteLink">Delete</a></td>
+        </tr>
+    }
+</table>

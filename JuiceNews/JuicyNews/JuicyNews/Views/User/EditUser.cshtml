@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "EditUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditUser</h2>
+
+@{
+    DataAccess.Entity.User user = (DataAccess.Entity.User)ViewData["editUser"];
+    DataAccess.Entity.User loggedUser = (DataAccess.Entity.User)ViewData["loggedUser"];
+}
+<form action="/User/EditUser" method="post">
+    <input type="hidden" name="Id" value="@user.Id" />
+    <input type="hidden" name="RegistrationDate" value="@user.RegistrationDate" />
+    <input type="hidden" name="Status" value="@user.Status" />
+    <input type="hidden" name="Password" value="@user.Password" />
+    <fieldset>
+        <legend>Edit User</legend>
+        <table>
+            <tr>
+                <td>Username</td>
+                <td><input type="text" name="Username" value="@user.Username" /></td>
+            </tr>
+            <tr>
+                <td>New password</td>
+                <td><input type="password" name="NewPassword" value="" /></td>
+                <td>Leave empty if you don't want to change it!</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="Email" value="@user.Email" /></td>
+            </tr>
+            <tr>
+                <td>First Name</td>
+                <td><input type="text" name="FirstName" value="@user.FirstName" /></td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td><input type="text" name="LastName" value="@user.LastName" /></td>
+            </tr>
+            @if (loggedUser.IsAdministrator)
+            {
+                <tr>
+                    <td>Administrator</td>
+                    <td>@Html.CheckBox("IsAdministrator", @user.IsAdministrator)</td>
+                </tr>
+            }
+            else
+            {
+                Html.Hidden("IsAdministrator", user.IsAdministrator);
+            }
+            <tr>
+                <td colspan="2"><input type="submit" value="Save" />&nbsp;&nbsp;&nbsp;<a href="@if (loggedUser.Id == user.Id) {
+                    @:/Profile/Index
+                }
+                else
+                {
+                    @:/User/Index
+                }">Cancel</a></td>
+            </tr>
+        </table>
+    </fieldset>
+</form>

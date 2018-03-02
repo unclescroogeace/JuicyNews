@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@{ 
+    List<DataAccess.Entity.News> lastNews = (List<DataAccess.Entity.News>)ViewData["lastNews"];
+    List<DataAccess.Entity.News> news = (List<DataAccess.Entity.News>)ViewData["news"];
+    List<DataAccess.Entity.User> users = (List<DataAccess.Entity.User>)ViewData["users"];
+}
+
+<div class="jumbotron">
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+@{
+    bool authorNotFound = true;
+    string viewLink = @"../News/ViewNews?id=";
+}
+
+<div class="row">
+    @foreach (var latest in lastNews)
+    {
+        <div class="col-md-4">
+            <a href="@viewLink@latest.Id"><h2>@latest.Title</h2></a>
+            <p>@JuicyNews.Utility.Helper.stringShorter(latest.Content, 200)...</p>
+            @foreach (var user in users)
+            {
+                authorNotFound = true;
+                if (latest.UserId == user.Id)
+                {
+                    authorNotFound = false; 
+                    <div>Author : @user.FirstName @user.LastName</div>
+                    break;
+                }
+            }
+            @if (authorNotFound)
+            {
+                <div>Author : Unknown</div>
+            }
+            <div>Date Of Publishing : @latest.DateOfPublishing</div>
+        </div>
+    }
+</div>

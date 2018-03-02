@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "EditComment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditComment</h2>
+
+@{ 
+    string newsTitle = (string)ViewData["newsTitle"];
+    DataAccess.Entity.Comment editComment = (DataAccess.Entity.Comment)ViewData["editComment"];
+}
+<form action="/Comment/EditComment" method="post">
+    <input type="hidden" name="Id" value="@editComment.Id" />
+    <input type="hidden" name="UserId" value="@editComment.UserId" />
+    <input type="hidden" name="NewsId" value="@editComment.NewsId">
+    <fieldset>
+        <legend>Edit User</legend>
+        <table>
+            <tr>
+                <td>
+                    Edit comment for news : @newsTitle
+                </td>
+            </tr>
+            <tr>
+                <td>Content</td>
+                <td><textarea name="Content">@editComment.Content</textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Save" />&nbsp;&nbsp;&nbsp;@Html.ActionLink("Cancel", "ViewNews", "News", null, new { id = editComment.NewsId })
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</form>

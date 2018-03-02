@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    DataAccess.Entity.User user = (DataAccess.Entity.User)ViewData["userProfile"];
+}
+
+<h2>Profile Index</h2>
+@{ 
+    var editLink = "/User/EditUser?id=" + user.Id;
+}
+<table>
+    <tr>
+        <td>Username:</td>
+        <td>@user.Username</td>
+    </tr>
+    <tr>
+        <td>Full Name:</td>
+        <td>@user.FirstName @user.LastName</td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td>@user.Email</td>
+    </tr>
+    <tr>
+        <a href="@editLink">Edit Profile</a>
+    </tr>
+</table>

@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form action="/Home/Register" method="post">
+    <fieldset>
+        <legend>Register</legend>
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td><input type="text" name="Username" /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" name="Password" /></td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><input type="text" name="Email" /></td>
+            </tr>
+            <tr>
+                <td>First Name:</td>
+                <td><input type="text" name="FirstName" /></td>
+            </tr>
+            <tr>
+                <td>Last Name:</td>
+                <td><input type="text" name="LastName" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Register" />&nbsp;<a href="/Home/Index">Cancel</a></td>
+            </tr>
+        </table>
+    </fieldset>
+</form>

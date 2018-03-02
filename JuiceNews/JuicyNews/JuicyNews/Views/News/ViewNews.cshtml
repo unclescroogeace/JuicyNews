@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "ViewNews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    DataAccess.Entity.News news = (DataAccess.Entity.News)ViewData["viewNews"];
+    DataAccess.Entity.User loggedUser = (DataAccess.Entity.User)ViewData["loggedUser"];
+    List<DataAccess.Entity.Comment> newsComments = new List<DataAccess.Entity.Comment>();
+    newsComments = (List<DataAccess.Entity.Comment>)ViewData["newsComments"];
+    List<DataAccess.Entity.User> users = (List<DataAccess.Entity.User>)ViewData["users"];
+    string authorFullName = (string)ViewData["authorFullName"];
+    int i = 1;
+}
+
+<h2>@news.Title</h2>
+
+<table>
+    <tr>
+        <td>@news.Content</td>
+    </tr>
+    <tr>
+        <td>@authorFullName</td>
+    </tr>
+    <tr>
+        <td>
+            Date of Publishing: 
+            @news.DateOfPublishing.ToShortDateString()
+        </td>
+    </tr>
+</table>
+
+<h3>Comments section</h3>
+
+<div>
+    <table width="55%" cellpadding="4">
+        @if (newsComments.Count > 0)
+        {
+            foreach (var comment in newsComments)
+            {
+                var editLink = "/Comment/EditComment?commentId=" + comment.Id + "&newsId=" + comment.NewsId;
+                var deleteLink = "/Comment/DeleteComment?id=" + comment.Id;
+                <tr style="background-color: #f6f6f6;">
+                    <td colspan="2" style="border-top: 1px solid #e1e1e1; border-right: 1px solid #e1e1e1; border-left: 1px solid #e1e1e1;">
+                        @{
+                            bool authorNotFound = true;
+                            foreach (var user in users)
+                            {
+                                if (comment.UserId == user.Id)
+                                {
+                                    <div>@i.  @user.FirstName @user.LastName</div>
+                                    i++;
+                                    authorNotFound = false;
+                                }
+                            }
+                            if (authorNotFound)
+                            {
+                                <div>@i.  Unknown</div>
+                                i++;
+                            }
+                        }
+                    </td>
+                </tr>
+                <tr style="border: 1px solid #e1e1e1;">
+                    <td colspan="2">
+                        @comment.Content
+                    </td>
+                </tr>
+                            if (loggedUser != null && (loggedUser.Id == comment.UserId || loggedUser.IsAdministrator))
+                            {
+                                <tr style="background-color: #f6f6f6; border-bottom: 1px solid #e1e1e1; border-left: 1px solid #e1e1e1; border-right: 1px solid #e1e1e1;">
+                                    <td align="right">
+                                        <a href="@editLink">Edit</a>
+                                    </td>
+                                    @if (loggedUser.IsAdministrator)
+                                    {
+                                        <td align="right" width="10%" style="padding-right: 13px;">
+                                            <a href="@deleteLink">Delete</a>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                            <tr style="height: 10px;"><td></td></tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td><i>There are not comments for this news yet!</i></td>
+                                </tr>
+                            }
+    </table>
+</div>
+
+
+@if (loggedUser != null)
+{
+    <form action="/Comment/CreateComment" method="post">
+        <fieldset>
+            <input type="hidden" name="NewsId" value="@news.Id" />
+            <input type="hidden" name="UserId" value="@loggedUser.Id" />
+            <table>
+                <tr>
+                    <td>Content:</td>
+                    <td><textarea rows="4" cols="70" name="Content" ></textarea></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+}
+else
+{
+    Html.Raw("To submit a comment you need to ");
+    <a href="/Home/Login">Login</a>
+    @Html.Raw(" and if you don't have account ");
+    <a href="/Home/Register">Register now</a>
+}
