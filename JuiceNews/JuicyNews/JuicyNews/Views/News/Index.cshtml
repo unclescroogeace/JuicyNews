@@ -1,11 +1,7 @@
-﻿@{
+﻿@model JuicyNews.ViewModels.News.NewsIndexViewModel
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@{
-    List<DataAccess.Entity.User> users = (List<DataAccess.Entity.User>)ViewData["users"];
-
 }
 
 <h2>Index</h2>
@@ -28,32 +24,17 @@
         </th>
     </tr>
 
-    @foreach (var news in (List<DataAccess.Entity.News>)ViewData["news"])
+    @foreach (var news in Model.News)
     {
         var editLink = "/News/EditNews?id=" + news.Id;
         var deleteLink = "/News/DeleteNews?id=" + news.Id;
         var viewLink = "/News/ViewNews?id=" + news.Id;
-        bool authorNotFound = true;
         <tr>
             <td>
                 @news.Title
             </td>
             <td>
-                @foreach(var user in users)
-                {
-                    authorNotFound = true;
-                    if (news.UserId == user.Id)
-                    {
-                        <div>@user.FirstName @user.LastName</div>
-                        authorNotFound = false;
-                        break;
-                    }
-                }
-
-                @if (authorNotFound)
-                {
-                    <div>Unknown</div>
-                }
+                @news.Author
             </td>
             <td>
                 <a href="@viewLink">View</a>
@@ -67,3 +48,7 @@
         </tr>
     }
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

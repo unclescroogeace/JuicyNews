@@ -160,6 +160,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\Helper.cs" />
     <Compile Include="Utility\PasswordHashing.cs" />
+    <Compile Include="ViewModels\Comment\CommentEditCommentViewModel.cs" />
+    <Compile Include="ViewModels\Comment\CommentViewNewsViewModel.cs" />
+    <Compile Include="ViewModels\Home\HomeIndexViewModel.cs" />
+    <Compile Include="ViewModels\News\NewsCreateViewModel.cs" />
+    <Compile Include="ViewModels\News\NewsEditViewModel.cs" />
+    <Compile Include="ViewModels\News\NewsIndexViewModel.cs" />
+    <Compile Include="ViewModels\News\NewsViewNewsViewModel.cs" />
+    <Compile Include="ViewModels\Profile\ProfileIndexViewModel.cs" />
+    <Compile Include="ViewModels\User\UserEditUserViewModel.cs" />
+    <Compile Include="ViewModels\User\UserIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />

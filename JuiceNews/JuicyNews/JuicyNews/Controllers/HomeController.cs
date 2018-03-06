@@ -1,6 +1,7 @@
 ﻿using DataAccess.Entity;
 using DataAccess.Repository;
 using JuicyNews.Models;
+using JuicyNews.ViewModels.Home;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +13,16 @@ namespace JuicyNews.Controllers
     public class HomeController : Controller
     {
         private NewsRepository newsRepository;
-        private UsersRepository usersRepository;
+
         public ActionResult Index()
         {
+            HomeIndexViewModel model = new HomeIndexViewModel();
             newsRepository = RepositoryFactory.GetNewsRepository();
-            usersRepository = RepositoryFactory.GetUsersRepository();
 
-            List<News> lastNews = newsRepository.GetAll().OrderByDescending(n => n.DateOfPublishing).Take(3).ToList();
+            model.LatestNews = newsRepository.GetAll().OrderByDescending(n => n.DateOfPublishing).Take(3).ToList();
+            model.News = newsRepository.GetAll().OrderByDescending(n => n.DateOfPublishing).Skip(3).ToList();
 
-            ViewData["lastNews"] = lastNews;
-            ViewData["allNews"] = newsRepository.GetAll().OrderByDescending(n => n.DateOfPublishing).ToList();
-            ViewData["users"] = usersRepository.GetAll();
-
-            return View();
+            return View(model);
         }
 
         [HttpGet]

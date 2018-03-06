@@ -1,4 +1,4 @@
-﻿
+﻿@model JuicyNews.ViewModels.Profile.ProfileIndexViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,22 +7,28 @@
 
 <h2>Profile Index</h2>
 @{ 
-    var editLink = "/User/EditUser?id=" + user.Id;
+    var editLink = "/User/EditUser?id=" + Model.Id;
 }
 <table>
     <tr>
         <td>Username:</td>
-        <td>@user.Username</td>
+        <td>@Html.DisplayFor(model => model.Username)</td>
     </tr>
     <tr>
         <td>Full Name:</td>
-        <td>@user.FirstName @user.LastName</td>
+        <td>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</td>
     </tr>
     <tr>
         <td>Email</td>
-        <td>@user.Email</td>
+        <td>@Html.DisplayFor(model => model.Email)</td>
     </tr>
     <tr>
-        <a href="@editLink">Edit Profile</a>
+        <td>
+            <a href="@editLink">Edit Profile</a>
+        </td>
     </tr>
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

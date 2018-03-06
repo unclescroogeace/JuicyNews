@@ -1,4 +1,4 @@
-﻿
+﻿@model JuicyNews.ViewModels.User.UserIndexViewModel
 @{
     ViewBag.Title = "Manage Users";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -37,7 +37,7 @@
         </th>
     </tr>
 
-    @foreach (var user in (List<DataAccess.Entity.User>)ViewData["users"])
+    @foreach (var user in Model.Users)
     {
         var editLink = "/User/EditUser?id=" + user.Id;
         var deleteLink = "/User/DeleteUser?id=" + user.Id;
@@ -84,3 +84,7 @@
         </tr>
     }
 </table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

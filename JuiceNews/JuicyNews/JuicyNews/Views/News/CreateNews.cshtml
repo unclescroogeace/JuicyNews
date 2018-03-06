@@ -1,4 +1,4 @@
-﻿
+﻿@model JuicyNews.ViewModels.News.NewsCreateViewModel
 @{
     ViewBag.Title = "CreateNews";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,20 +6,28 @@
 
 <h2>CreateNews</h2>
 
-<form action="/News/CreateNews" method="post">
+@using (Html.BeginForm())
+{
     <fieldset>
+        <div>@Html.ValidationSummary(true)</div>
         <table>
             <tr>
                 <td>Title:</td>
-                <td><input type="text" name="Title" /></td>
+                <td>@Html.EditorFor(model => model.Title)</td>
+                <td>@Html.ValidationMessageFor(model => model.Title)</td>
             </tr>
             <tr>
                 <td>Content:</td>
-                <td><textarea type="text" name="Content"></textarea></td>
+                <td>@Html.EditorFor(model => model.Content)</td>
+                <td>@Html.ValidationMessageFor(model => model.Content)</td>
             </tr>
             <tr>
                 <td colspan="2"><input type="submit" value="Publish" /></td>
             </tr>
         </table>
     </fieldset>
-</form>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

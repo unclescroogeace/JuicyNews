@@ -8,3 +8,14 @@ C:\Users\uncle\Desktop\JuiceNews\JuicyNews\DataAccess\bin\Debug\EntityFramework.
 C:\Users\uncle\Desktop\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.csproj.CoreCompileInputs.cache
 C:\Users\uncle\Desktop\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.dll
 C:\Users\uncle\Desktop\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.pdb
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\bin\Debug\DataAccess.dll.config
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\bin\Debug\DataAccess.dll
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\bin\Debug\DataAccess.pdb
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\bin\Debug\EntityFramework.dll
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\bin\Debug\EntityFramework.xml
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.dll
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.pdb
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache

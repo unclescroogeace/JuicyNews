@@ -1,4 +1,4 @@
-﻿
+﻿@model JuicyNews.ViewModels.Comment.CommentEditCommentViewModel
 @{
     ViewBag.Title = "EditComment";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,12 +8,16 @@
 
 @{ 
     string newsTitle = (string)ViewData["newsTitle"];
-    DataAccess.Entity.Comment editComment = (DataAccess.Entity.Comment)ViewData["editComment"];
 }
-<form action="/Comment/EditComment" method="post">
-    <input type="hidden" name="Id" value="@editComment.Id" />
-    <input type="hidden" name="UserId" value="@editComment.UserId" />
-    <input type="hidden" name="NewsId" value="@editComment.NewsId">
+
+@using (Html.BeginForm("EditComment", "Comment", FormMethod.Post))
+{
+    @Html.ValidationSummary(true);
+    @Html.HiddenFor(model => model.Id);
+    @Html.HiddenFor(model => model.NewsId);
+    @Html.HiddenFor(model => model.UserId);
+    @Html.HiddenFor(model => model.Author);
+    @Html.HiddenFor(model => model.Date);
     <fieldset>
         <legend>Edit User</legend>
         <table>
@@ -24,13 +28,18 @@
             </tr>
             <tr>
                 <td>Content</td>
-                <td><textarea name="Content">@editComment.Content</textarea></td>
+                <td>@Html.EditorFor(model => model.Content)</td>
+                <td>@Html.ValidationMessageFor(model => model.Content)</td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <input type="submit" value="Save" />&nbsp;&nbsp;&nbsp;@Html.ActionLink("Cancel", "ViewNews", "News", null, new { id = editComment.NewsId })
+                    <input type="submit" value="Save" />&nbsp;&nbsp;&nbsp;@Html.ActionLink("Cancel", "ViewNews", "News", null, new { id = Model.NewsId})
                 </td>
             </tr>
         </table>
     </fieldset>
-</form>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

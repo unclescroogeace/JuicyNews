@@ -11,7 +11,7 @@ namespace DataAccess.Entity
         public string Title { get; set; }
         public string Content { get; set; }
         public int UserId { get; set; }
+        public string Author { get; set; }
         public DateTime DateOfPublishing { get; set; }
-        public DateTime DateOfLastEdit { get; set; }
     }
 }

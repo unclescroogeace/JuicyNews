@@ -19,11 +19,6 @@ namespace DataAccess.Repository
             return (User)Items.Where(i => id == i.Id);
         }
 
-        public List<User> GetAll()
-        {
-            return Items.ToList();
-        }
-
         public void ChangeUserStatus(User user, bool status)
         {
             

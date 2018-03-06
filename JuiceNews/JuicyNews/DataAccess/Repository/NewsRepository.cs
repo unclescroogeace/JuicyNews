@@ -9,9 +9,6 @@ namespace DataAccess.Repository
 {
     public class NewsRepository : BaseRepository<News>
     {
-        public List<News> GetAll()
-        {
-            return Items.ToList();
-        }
+
     }
 }

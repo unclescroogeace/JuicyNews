@@ -1,6 +1,7 @@
 ﻿using DataAccess.Entity;
 using DataAccess.Repository;
 using JuicyNews.Models;
+using JuicyNews.ViewModels.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,50 +27,77 @@ namespace JuicyNews.Controllers
             }
 
             userRepository = RepositoryFactory.GetUsersRepository();
-            ViewData["users"] = userRepository.GetAll();
 
-            return View();
+            UserIndexViewModel model = new UserIndexViewModel();
+            model.Users = userRepository.GetAll();
+
+            return View(model);
         }
 
         [HttpGet]
-        public ActionResult EditUser(int? id)
+        public ActionResult EditUser(int id)
         {
-            if (AuthenticationManager.LoggedUser == null || !(AuthenticationManager.LoggedUser.Id == id.Value || AuthenticationManager.LoggedUser.IsAdministrator))
+            if (AuthenticationManager.LoggedUser == null || !(AuthenticationManager.LoggedUser.Id == id || AuthenticationManager.LoggedUser.IsAdministrator))
                 return RedirectToAction("Index", "Home");
-
-
+            
             userRepository = RepositoryFactory.GetUsersRepository();
 
             ViewData["loggedUser"] = AuthenticationManager.LoggedUser;
 
-            User user = null;
-            if (id == null)
-                user = new User();
-            else
-                user = userRepository.GetById(id.Value);
+            User user = new User();
+            user = userRepository.GetById(id);
 
-            ViewData["editUser"] = user;
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            return View();
+            UserEditUserViewModel model = new UserEditUserViewModel();
+
+            model.Email = user.Email;
+            model.FirstName = user.FirstName;
+            model.Id = user.Id;
+            model.IsAdministrator = user.IsAdministrator;
+            model.LastName = user.LastName;
+            model.Password = user.Password;
+            model.RegistrationDate = user.RegistrationDate;
+            model.Status = user.Status;
+            model.Username = user.Username;
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult EditUser(User user)
+        public ActionResult EditUser(UserEditUserViewModel model)
         {
-            if (AuthenticationManager.LoggedUser == null && !(AuthenticationManager.LoggedUser.Id == user.Id || AuthenticationManager.LoggedUser.IsAdministrator))
+            if (AuthenticationManager.LoggedUser == null && !(AuthenticationManager.LoggedUser.Id == model.Id || AuthenticationManager.LoggedUser.IsAdministrator))
                 return RedirectToAction("Login", "Home");
             
             userRepository = RepositoryFactory.GetUsersRepository();
 
             if(Request.Form["NewPassword"] != "")
             {
-                user.Password = Utility.PasswordHashing.md5Hashing(Request.Form["NewPassword"]);
+                model.Password = Utility.PasswordHashing.md5Hashing(Request.Form["NewPassword"]);
             }
+
+            User user = new User();
+
+            user.Id = model.Id;
+            user.Email = model.Email;
+            user.FirstName = model.FirstName;
+            user.IsAdministrator = model.IsAdministrator;
+            user.LastName = model.LastName;
+            user.Password = model.Password;
+            user.RegistrationDate = model.RegistrationDate;
+            user.Status = model.Status;
+            user.Username = model.Username;
 
             userRepository.Save(user);
 
             if (AuthenticationManager.LoggedUser.Id == user.Id)
             {
+                AuthenticationManager.LoggedUser.FirstName = user.FirstName;
+                AuthenticationManager.LoggedUser.LastName = user.LastName;
                 return RedirectToAction("Index", "Profile");
             }
             else

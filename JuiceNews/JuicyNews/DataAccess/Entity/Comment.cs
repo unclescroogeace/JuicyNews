@@ -11,5 +11,7 @@ namespace DataAccess.Entity
         public int NewsId { get; set; }
         public int UserId { get; set; }
         public string Content { get; set; }
+        public DateTime Date { get; set; }
+        public string Author { get; set; }
     }
 }

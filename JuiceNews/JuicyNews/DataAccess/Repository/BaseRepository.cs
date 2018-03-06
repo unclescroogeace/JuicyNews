@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,9 +25,9 @@ namespace DataAccess.Repository
             return Items.Where(i => i.Id == id).FirstOrDefault();
         }
 
-        public List<T> GetAll(int page, int pageSize)
+        public List<T> GetAll()
         {
-            return Items.OrderBy(i => i.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return Items.ToList();
         }
 
         public void Save(T item)

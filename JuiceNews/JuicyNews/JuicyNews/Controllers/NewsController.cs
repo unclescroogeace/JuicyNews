@@ -1,6 +1,7 @@
 ﻿using DataAccess.Entity;
 using DataAccess.Repository;
 using JuicyNews.Models;
+using JuicyNews.ViewModels.News;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,61 +20,95 @@ namespace JuicyNews.Controllers
             if (AuthenticationManager.LoggedUser == null)
                 return RedirectToAction("Index", "Home");
 
-            UsersRepository userRepo = RepositoryFactory.GetUsersRepository();
             newsRepository = RepositoryFactory.GetNewsRepository();
+            
+            NewsIndexViewModel model = new NewsIndexViewModel();
+            model.News = newsRepository.GetAll();
 
-            ViewData["news"] = newsRepository.GetAll();
-            ViewData["users"] = userRepo.GetAll();
-            return View();
+            return View(model);
         }
 
-        [HttpGet]
         public ActionResult CreateNews()
         {
             if (AuthenticationManager.LoggedUser == null)
                 return RedirectToAction("Index", "Home");
+
             return View();
         }
         
         [HttpPost]
-        public ActionResult CreateNews(News news)
+        public ActionResult CreateNews(NewsCreateViewModel model)
         {
-            news.DateOfPublishing = DateTime.Today;
-            news.DateOfLastEdit = DateTime.Today;
-            news.UserId = AuthenticationManager.LoggedUser.Id;
+            model.DateOfPublishing = DateTime.Now;
+            model.UserId = AuthenticationManager.LoggedUser.Id;
+            model.Author = AuthenticationManager.LoggedUser.FirstName + " " + AuthenticationManager.LoggedUser.LastName;
+
             newsRepository = RepositoryFactory.GetNewsRepository();
+            News news = new News();
+            
+            news.Author = model.Author;
+            news.Content = model.Content;
+            news.DateOfPublishing = model.DateOfPublishing;
+            news.Title = model.Title;
+            news.UserId = model.UserId;
+
             newsRepository.Save(news);
             return RedirectToAction("Index", "News");
         }
 
         [HttpGet]
-        public ActionResult EditNews(int? id)
+        public ActionResult EditNews(int id)
         {
             if (AuthenticationManager.LoggedUser == null)
                 return RedirectToAction("Index", "Home");
-
-
+            
             newsRepository = RepositoryFactory.GetNewsRepository();
 
-            News news = null;
-            if (id == null)
-                news = new News();
-            else
-                news = newsRepository.GetById(id.Value);
+            News news = newsRepository.GetById(id);
 
-            ViewData["editNews"] = news;
+            if (news == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            NewsEditViewModel model = new NewsEditViewModel();
+
+            model.Author = news.Author;
+            model.Content = news.Content;
+            model.DateOfPublishing = news.DateOfPublishing;
+            model.Id = news.Id;
+            model.Title = news.Title;
+            model.UserId = news.UserId;
             
-            return View();
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult EditNews(News news)
+        public ActionResult EditNews(NewsEditViewModel model)
         {
             if (AuthenticationManager.LoggedUser == null)
                 return RedirectToAction("Login", "Home");
 
-            news.DateOfLastEdit = DateTime.Today;
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             newsRepository = RepositoryFactory.GetNewsRepository();
+
+            News news = newsRepository.GetById(model.Id);
+
+            if (news == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            news.Id = model.Id;
+            news.Author = model.Author;
+            news.Content = model.Content;
+            news.DateOfPublishing = model.DateOfPublishing;
+            news.Title = model.Title;
+            news.UserId = model.UserId;
 
             newsRepository.Save(news);
 
@@ -92,40 +127,26 @@ namespace JuicyNews.Controllers
             return RedirectToAction("Index", "News");
         }
 
-        public ActionResult ViewNews(int? id)
+        public ActionResult ViewNews(int id)
         {
             newsRepository = RepositoryFactory.GetNewsRepository();
             CommentsRepository commentsRepository = RepositoryFactory.GetCommentsRepository();
-            News news = null;
-            if (id == null)
-                return RedirectToAction("Index", "Home");
-            else
-                news = newsRepository.GetById(id.Value);
+
+            News news = newsRepository.GetById(id);
 
             if (news == null)
             {
                 return RedirectToAction("Index", "Home");
             }
-            List<Comment> newsComments = new List<Comment>();
-            newsComments = commentsRepository.GetCommentsByNewsId(id.Value);
-            UsersRepository usersRepository = RepositoryFactory.GetUsersRepository();
-            User author = usersRepository.GetById(news.UserId);
 
-            if (author == null)
-            {
-                ViewData["authorFullName"] = "Unknown";
-            }
-            else
-            {
-                ViewData["authorFullName"] = author.FirstName + " " + author.LastName;
-            }
+            NewsViewNewsViewModel model = new NewsViewNewsViewModel();
+            
+            model.News = news;
+            model.Comments = commentsRepository.GetCommentsByNewsId(id);
 
-            ViewData["newsComments"] = newsComments;
-            ViewData["viewNews"] = news;
             ViewData["loggedUser"] = AuthenticationManager.LoggedUser;
-            ViewData["users"] = usersRepository.GetAll();
 
-            return View();
+            return View(model);
         }
     }
 }
