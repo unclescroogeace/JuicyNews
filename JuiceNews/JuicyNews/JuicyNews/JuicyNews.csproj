@@ -163,6 +163,8 @@
     <Compile Include="ViewModels\Comment\CommentEditCommentViewModel.cs" />
     <Compile Include="ViewModels\Comment\CommentViewNewsViewModel.cs" />
     <Compile Include="ViewModels\Home\HomeIndexViewModel.cs" />
+    <Compile Include="ViewModels\Home\LoginViewModel.cs" />
+    <Compile Include="ViewModels\Home\RegisterViewModel.cs" />
     <Compile Include="ViewModels\News\NewsCreateViewModel.cs" />
     <Compile Include="ViewModels\News\NewsEditViewModel.cs" />
     <Compile Include="ViewModels\News\NewsIndexViewModel.cs" />

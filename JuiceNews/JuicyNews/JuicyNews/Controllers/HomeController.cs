@@ -28,21 +28,28 @@ namespace JuicyNews.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            return View();
+            LoginViewModel model = new LoginViewModel();
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        public ActionResult Login(LoginViewModel model)
         {
-            password = Utility.PasswordHashing.md5Hashing(password);
-            AuthenticationManager.Authenticate(username, password);
+            model.Password = Utility.PasswordHashing.md5Hashing(model.Password);
+            AuthenticationManager.Authenticate(model.Username, model.Password);
+
+            if (!ModelState.IsValid)
+            {
+                model.Password = "";
+                return View(model);
+            }
 
             if (AuthenticationManager.LoggedUser == null)
             {
                 ModelState.AddModelError("authenticationFailed", "Wrong username or password!");
-                ViewData["username"] = username;
-
-                return View();
+                model.Password = "";
+                return View(model);
             }
 
             AuthenticationManager.ChangeUserStatus(AuthenticationManager.LoggedUser.Id, true);
@@ -62,18 +69,33 @@ namespace JuicyNews.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-            return View();
+            RegisterViewModel model = new RegisterViewModel();
+
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Register(User item)
+        public ActionResult Register(RegisterViewModel model)
         {
-            item.Password = Utility.PasswordHashing.md5Hashing(item.Password);
-            item.Status = false;
-            item.IsAdministrator = false;
-            item.RegistrationDate = DateTime.Now;
+            if (!ModelState.IsValid)
+            {
+                model.Password = "";
+                return View(model);
+            }
+
+            User user = new User();
+
+            user.Email = model.Email;
+            user.FirstName = model.FirstName;
+            user.IsAdministrator = false;
+            user.LastName = model.LastName;
+            user.Password = Utility.PasswordHashing.md5Hashing(model.Password);
+            user.RegistrationDate = DateTime.Now;
+            user.Status = false;
+            user.Username = model.Username;
+
             UsersRepository repo = RepositoryFactory.GetUsersRepository();
-            repo.Save(item);
+            repo.Save(user);
 
             return RedirectToAction("Index", "Home");
         }

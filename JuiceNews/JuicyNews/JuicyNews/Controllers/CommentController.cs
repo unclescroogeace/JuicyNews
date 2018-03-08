@@ -40,25 +40,29 @@ namespace JuicyNews.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditComment(int commentId, int newsId)
+        public ActionResult EditComment(int? commentId, int? newsId)
         {
+            if (commentId == null || newsId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
             commentsRepository = RepositoryFactory.GetCommentsRepository();
-            NewsRepository newsRepository = RepositoryFactory.GetNewsRepository();
 
             Comment comment = new Comment();
-            comment = commentsRepository.GetById(commentId);
+            comment = commentsRepository.GetById(commentId.Value);
 
+            if (AuthenticationManager.LoggedUser == null || (comment.UserId != AuthenticationManager.LoggedUser.Id || !AuthenticationManager.LoggedUser.IsAdministrator))
+                return RedirectToAction("Login", "Home");
+
+            NewsRepository newsRepository = RepositoryFactory.GetNewsRepository();
             News news = new News();
-            news = newsRepository.GetById(newsId);
+            news = newsRepository.GetById(newsId.Value);
 
             if (news == null || comment == null)
             {
                 return RedirectToAction("Index", "Home");
             }
-            
-            if (AuthenticationManager.LoggedUser == null && ((comment.UserId != AuthenticationManager.LoggedUser.Id) || !AuthenticationManager.LoggedUser.IsAdministrator))
-                return RedirectToAction("Login", "Home");
-
 
             CommentEditCommentViewModel model = new CommentEditCommentViewModel();
 
@@ -75,10 +79,24 @@ namespace JuicyNews.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditComment(Comment comment)
+        public ActionResult EditComment(CommentEditCommentViewModel model)
         {
-            if (AuthenticationManager.LoggedUser == null && ((comment.UserId != AuthenticationManager.LoggedUser.Id) || !AuthenticationManager.LoggedUser.IsAdministrator))
+            if (AuthenticationManager.LoggedUser == null || ((model.UserId != AuthenticationManager.LoggedUser.Id) || !AuthenticationManager.LoggedUser.IsAdministrator))
                 return RedirectToAction("Login", "Home");
+
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Comment comment = new Comment();
+
+            comment.Author = model.Author;
+            comment.Content = model.Content;
+            comment.Date = model.Date;
+            comment.Id = model.Id;
+            comment.NewsId = model.NewsId;
+            comment.UserId = model.UserId;
 
             commentsRepository = RepositoryFactory.GetCommentsRepository();
             commentsRepository.Save(comment);

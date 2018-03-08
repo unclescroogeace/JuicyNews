@@ -1,11 +1,11 @@
 ﻿@model JuicyNews.ViewModels.Profile.ProfileIndexViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
     DataAccess.Entity.User user = (DataAccess.Entity.User)ViewData["userProfile"];
 }
 
-<h2>Profile Index</h2>
+<h2>Profile</h2>
 @{ 
     var editLink = "/User/EditUser?id=" + Model.Id;
 }

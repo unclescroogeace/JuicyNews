@@ -1,6 +1,6 @@
 ﻿@model JuicyNews.ViewModels.News.NewsViewNewsViewModel
 @{
-    ViewBag.Title = "ViewNews";
+    ViewBag.Title = "View News";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,25 +11,16 @@
 }
 
 <h2>@Html.DisplayFor(model => model.News.Title)</h2>
-
+<text style="color: #666666">Author: @Html.DisplayFor(model => model.News.Author) &nbsp;&nbsp;&nbsp;&nbsp; Date: @Html.DisplayFor(model => model.News.DateOfPublishing)</text>
 <table>
+    <tr><td style="height: 20px;"></td></tr>
     <tr>
         <td>@Html.DisplayFor(model => model.News.Content)</td>
     </tr>
     <tr><td style="height: 20px;"></td></tr>
-    <tr>
-        <td>Published by : @Html.DisplayFor(model => model.News.Author)</td>
-    </tr>
-    <tr>
-        <td>
-            Date of Publishing: 
-            @Html.DisplayFor(model => model.News.DateOfPublishing)
-        </td>
-    </tr>
 </table>
 
 <h3>Comments section</h3>
-
 <div>
     <table width="55%" cellpadding="4">
         @if (Model.Comments.Count > 0)

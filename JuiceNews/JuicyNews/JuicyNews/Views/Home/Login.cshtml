@@ -1,25 +1,32 @@
-﻿
+﻿@model JuicyNews.ViewModels.Home.LoginViewModel
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<form action="/Home/Login" method="post">
+@using (Html.BeginForm())
+{
     <fieldset>
         <legend>Login</legend>
         @Html.ValidationMessage("authenticationFailed")
         <table>
             <tr>
-                <td>Username:</td>
-                <td><input type="text" name="username" /></td>
+                <td>@Html.LabelFor(model => model.Username) &nbsp; </td>
+                <td>@Html.EditorFor(model => model.Username)</td>
+                <td>@Html.ValidationMessageFor(model => model.Username)</td>
             </tr>
             <tr>
-                <td>Password:</td>
-                <td><input type="password" name="password" /></td>
+                <td>@Html.LabelFor(model => model.Password) &nbsp;</td>
+                <td>@Html.EditorFor(model => model.Password)</td>
+                <td>@Html.ValidationMessageFor(model => model.Password)</td>
             </tr>
             <tr>
                 <td colspan="2"><input type="submit" value="Login" /></td>
             </tr>
         </table>
     </fieldset>
-</form>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

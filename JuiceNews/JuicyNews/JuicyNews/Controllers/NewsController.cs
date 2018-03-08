@@ -57,14 +57,18 @@ namespace JuicyNews.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditNews(int id)
+        public ActionResult EditNews(int? id)
         {
             if (AuthenticationManager.LoggedUser == null)
                 return RedirectToAction("Index", "Home");
-            
-            newsRepository = RepositoryFactory.GetNewsRepository();
 
-            News news = newsRepository.GetById(id);
+            if (id == null)
+            {
+                return RedirectToAction("Index", "News");
+            }
+
+            newsRepository = RepositoryFactory.GetNewsRepository();
+            News news = newsRepository.GetById(id.Value);
 
             if (news == null)
             {
@@ -115,24 +119,34 @@ namespace JuicyNews.Controllers
             return RedirectToAction("Index", "News");
         }
 
-        public ActionResult DeleteNews(int id)
+        public ActionResult DeleteNews(int? id)
         {
             if (AuthenticationManager.LoggedUser == null)
                 return RedirectToAction("Login", "Home");
 
+            if (id == null)
+            {
+                return RedirectToAction("Index", "News");
+            }
+
             newsRepository = RepositoryFactory.GetNewsRepository();
-            News news = newsRepository.GetById(id);
+            News news = newsRepository.GetById(id.Value);
             newsRepository.Delete(news);
 
             return RedirectToAction("Index", "News");
         }
 
-        public ActionResult ViewNews(int id)
+        public ActionResult ViewNews(int? id)
         {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             newsRepository = RepositoryFactory.GetNewsRepository();
             CommentsRepository commentsRepository = RepositoryFactory.GetCommentsRepository();
 
-            News news = newsRepository.GetById(id);
+            News news = newsRepository.GetById(id.Value);
 
             if (news == null)
             {
@@ -142,7 +156,7 @@ namespace JuicyNews.Controllers
             NewsViewNewsViewModel model = new NewsViewNewsViewModel();
             
             model.News = news;
-            model.Comments = commentsRepository.GetCommentsByNewsId(id);
+            model.Comments = commentsRepository.GetCommentsByNewsId(id.Value);
 
             ViewData["loggedUser"] = AuthenticationManager.LoggedUser;
 

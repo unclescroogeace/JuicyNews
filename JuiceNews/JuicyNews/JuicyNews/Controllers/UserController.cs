@@ -17,13 +17,9 @@ namespace JuicyNews.Controllers
         // GET: User
         public ActionResult Index()
         {
-            if (AuthenticationManager.LoggedUser == null)
+            if (AuthenticationManager.LoggedUser == null || !AuthenticationManager.LoggedUser.IsAdministrator)
             {
                 return RedirectToAction("Index", "Home");
-            }
-            if (!AuthenticationManager.LoggedUser.IsAdministrator)
-            {
-                return RedirectToAction("Index", "Home"); 
             }
 
             userRepository = RepositoryFactory.GetUsersRepository();
@@ -35,17 +31,21 @@ namespace JuicyNews.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditUser(int id)
+        public ActionResult EditUser(int? id)
         {
-            if (AuthenticationManager.LoggedUser == null || !(AuthenticationManager.LoggedUser.Id == id || AuthenticationManager.LoggedUser.IsAdministrator))
+            if (AuthenticationManager.LoggedUser == null || !(AuthenticationManager.LoggedUser.Id == id.Value || AuthenticationManager.LoggedUser.IsAdministrator))
                 return RedirectToAction("Index", "Home");
             
-            userRepository = RepositoryFactory.GetUsersRepository();
+            if(id == null)
+            {
+                return RedirectToAction("Index", "User");
+            }
 
             ViewData["loggedUser"] = AuthenticationManager.LoggedUser;
 
+            userRepository = RepositoryFactory.GetUsersRepository();
             User user = new User();
-            user = userRepository.GetById(id);
+            user = userRepository.GetById(id.Value);
 
             if (user == null)
             {
@@ -70,7 +70,7 @@ namespace JuicyNews.Controllers
         [HttpPost]
         public ActionResult EditUser(UserEditUserViewModel model)
         {
-            if (AuthenticationManager.LoggedUser == null && !(AuthenticationManager.LoggedUser.Id == model.Id || AuthenticationManager.LoggedUser.IsAdministrator))
+            if (AuthenticationManager.LoggedUser == null || !(AuthenticationManager.LoggedUser.Id == model.Id || AuthenticationManager.LoggedUser.IsAdministrator))
                 return RedirectToAction("Login", "Home");
             
             userRepository = RepositoryFactory.GetUsersRepository();
@@ -106,13 +106,18 @@ namespace JuicyNews.Controllers
             }
         }
 
-        public ActionResult DeleteUser(int id)
+        public ActionResult DeleteUser(int? id)
         {
-            if (AuthenticationManager.LoggedUser == null)
-                return RedirectToAction("Login", "Home");
+            if (AuthenticationManager.LoggedUser == null || !AuthenticationManager.LoggedUser.IsAdministrator)
+                return RedirectToAction("Index", "Home");
+
+            if (id == null)
+            {
+                return RedirectToAction("Index", "User");
+            }
 
             userRepository = RepositoryFactory.GetUsersRepository();
-            User user = userRepository.GetById(id);
+            User user = userRepository.GetById(id.Value);
             userRepository.Delete(user);
 
             return RedirectToAction("Index", "User");
