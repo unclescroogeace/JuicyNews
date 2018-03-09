@@ -25,6 +25,8 @@ namespace JuicyNews.Controllers
             NewsIndexViewModel model = new NewsIndexViewModel();
             model.News = newsRepository.GetAll();
 
+            ViewData["loggedUser"] = AuthenticationManager.LoggedUser;
+
             return View(model);
         }
 
@@ -131,6 +133,7 @@ namespace JuicyNews.Controllers
 
             newsRepository = RepositoryFactory.GetNewsRepository();
             News news = newsRepository.GetById(id.Value);
+
             newsRepository.Delete(news);
 
             return RedirectToAction("Index", "News");

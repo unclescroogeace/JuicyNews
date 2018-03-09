@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Manage News";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    DataAccess.Entity.User loggedUser = (DataAccess.Entity.User)ViewData["loggedUser"];
 }
 
 <h2>Manage News</h2>
@@ -42,9 +43,12 @@
             <td>
                 <a href="@editLink">Edit</a>
             </td>
-            <td>
-                <a href="@deleteLink">Delete</a>
-            </td>
+            @if (loggedUser.Id == news.UserId || loggedUser.IsAdministrator)
+            {
+                <td>
+                    <a href="@deleteLink">Delete</a>
+                </td>
+            }
         </tr>
     }
 </table>
