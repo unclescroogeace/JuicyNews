@@ -18,3 +18,4 @@ C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\bin\Deb
 C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.csproj.CoreCompileInputs.cache
 C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.dll
 C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.pdb
+C:\Users\uncle\Documents\GitHub\JuicyNews\JuiceNews\JuicyNews\DataAccess\obj\Debug\DataAccess.csprojResolveAssemblyReference.cache

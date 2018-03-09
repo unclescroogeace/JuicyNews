@@ -13,8 +13,8 @@
         <div class="col-md-4">
             <a href="@viewLink@news.Id"><h2>@news.Title</h2></a>
             <p>@JuicyNews.Utility.Helper.stringShorter(news.Content, 200)...</p>
-            <div>@news.Author</div>
-            <div>Date Of Publishing : @news.DateOfPublishing</div>
+            <div style="color: #666666">@news.Author</div>
+            <div style="color: #666666">@news.DateOfPublishing</div>
         </div>
     }
 </div>
@@ -22,7 +22,7 @@
 <div>
     @foreach (var news in Model.News)
     {
-        <a href="@viewLink@news.Id"><h3>@news.Title</h3></a><br />
+        <a href="@viewLink@news.Id"><h4>@news.Title</h4></a><br />
     }
 </div>
 
