@@ -1,0 +1,47 @@
+﻿@model JuicyNews.ViewModels.Home.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <legend>Register</legend>
+        @Html.ValidationSummary(true)
+        <table>
+            <tr>
+                <td>@Html.LabelFor(model => model.Username)</td>
+                <td>@Html.EditorFor(model => model.Username)</td>
+                <td>@Html.ValidationMessageFor(model => model.Username)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Password)</td>
+                <td>@Html.EditorFor(model => model.Password)</td>
+                <td>@Html.ValidationMessageFor(model => model.Password)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Email)</td>
+                <td>@Html.EditorFor(model => model.Email)</td>
+                <td>@Html.ValidationMessageFor(model => model.Email)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.FirstName)</td>
+                <td>@Html.EditorFor(model => model.FirstName)</td>
+                <td>@Html.ValidationMessageFor(model => model.FirstName)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.LastName)</td>
+                <td>@Html.EditorFor(model => model.LastName)</td>
+                <td>@Html.ValidationMessageFor(model => model.LastName)</td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Register" />&nbsp;<a href="/Home/Index">Cancel</a></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

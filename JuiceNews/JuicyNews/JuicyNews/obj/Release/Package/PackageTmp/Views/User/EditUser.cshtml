@@ -1,0 +1,78 @@
+﻿@model JuicyNews.ViewModels.User.UserEditUserViewModel
+@{
+    ViewBag.Title = "Edit User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit User</h2>
+
+@{
+    DataAccess.Entity.User loggedUser = (DataAccess.Entity.User)ViewData["loggedUser"];
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true);
+    @Html.HiddenFor(model => model.Id);
+    @Html.HiddenFor(model => model.RegistrationDate);
+    @Html.HiddenFor(model => model.Password);
+    @Html.HiddenFor(model => model.Status);
+    <fieldset>
+
+
+    <legend>Edit User</legend>
+        <table>
+        <tr>
+            <td>Username</td>
+            <td>@Html.EditorFor(model => model.Username)</td>
+            <td>@Html.ValidationMessageFor(model => model.Username)</td>
+        </tr>
+        <tr>
+            <td>New password</td>
+            <td><input type="password" name="NewPassword" value="" /></td>
+            <td>Leave empty if you don't want to change it!</td>
+            </tr>
+        <tr>
+            <td>Email</td>
+            <td>@Html.EditorFor(model => model.Email)</td>
+            <td>@Html.ValidationMessageFor(model => model.Email)</td>
+        </tr>
+        <tr>
+            <td>First Name</td>
+            <td>@Html.EditorFor(model => model.FirstName)</td>
+            <td>@Html.ValidationMessageFor(model => model.FirstName)</td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td>@Html.EditorFor(model => model.LastName)</td>
+            <td>@Html.ValidationMessageFor(model => model.LastName)</td>
+        </tr>
+        @if (loggedUser.IsAdministrator)
+                    {
+                        <tr>
+                            <td>Administrator</td>
+                            <td>@Html.CheckBoxFor(model => model.IsAdministrator)</td>
+                        </tr>
+        }
+        else
+        {
+            Html.HiddenFor(model => model.IsAdministrator);
+        }
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Save" />&nbsp;&nbsp;&nbsp;<a href="@if (loggedUser.Id == Model.Id) {
+                @:/Profile/Index
+            }
+            else
+            {
+                @:/User/Index
+            }">Cancel</a>
+            </td>
+        </tr>
+                </table>
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -11,7 +11,7 @@ namespace DataAccess.Repository
     public class MyDbContext : DbContext
     {
         public MyDbContext()
-            : base(@"Server=UNCLE-SCROOGE;Database=JuicyNews;Trusted_Connection=True;")
+            : base(@"Server=tcp:juicynews.database.windows.net,1433;Initial Catalog=JuicyNews;User ID=unclescrooge;Password=data6126141Eba;")
         {
             Database.SetInitializer<MyDbContext>(new CreateDatabaseIfNotExists<MyDbContext>());
             Database.CreateIfNotExists();

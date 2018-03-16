@@ -124,7 +124,14 @@ namespace JuicyNews.Controllers
         public ActionResult DeleteNews(int? id)
         {
             if (AuthenticationManager.LoggedUser == null)
+            {
                 return RedirectToAction("Login", "Home");
+            }
+
+            if (AuthenticationManager.LoggedUser.IsAdministrator)
+            {
+                return RedirectToAction("Index", "News");
+            }
 
             if (id == null)
             {

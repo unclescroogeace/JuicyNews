@@ -1,0 +1,58 @@
+﻿@model JuicyNews.ViewModels.News.NewsIndexViewModel
+@{
+    ViewBag.Title = "Manage News";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    DataAccess.Entity.User loggedUser = (DataAccess.Entity.User)ViewData["loggedUser"];
+}
+
+<h2>Manage News</h2>
+
+@Html.ActionLink("Create News", "CreateNews", "News")
+
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Author
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+        <th>
+        </th>
+    </tr>
+
+    @foreach (var news in Model.News)
+    {
+        var editLink = "/News/EditNews?id=" + news.Id;
+        var deleteLink = "/News/DeleteNews?id=" + news.Id;
+        var viewLink = "/News/ViewNews?id=" + news.Id;
+        <tr>
+            <td>
+                @news.Title
+            </td>
+            <td>
+                @news.Author
+            </td>
+            <td>
+                <a href="@viewLink">View</a>
+            </td>
+            <td>
+                <a href="@editLink">Edit</a>
+            </td>
+            @if (loggedUser.Id == news.UserId || loggedUser.IsAdministrator)
+            {
+                <td>
+                    <a href="@deleteLink">Delete</a>
+                </td>
+            }
+        </tr>
+    }
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,106 @@
+﻿@model JuicyNews.ViewModels.News.NewsViewNewsViewModel
+@{
+    ViewBag.Title = "View News";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
+    DataAccess.Entity.User loggedUser = (DataAccess.Entity.User)ViewData["loggedUser"];
+    int i = 1;
+}
+
+<h2>@Html.DisplayFor(model => model.News.Title)</h2>
+<text style="color: #666666">Author: @Html.DisplayFor(model => model.News.Author) &nbsp;&nbsp;&nbsp;&nbsp; Date: @Html.DisplayFor(model => model.News.DateOfPublishing)</text>
+<table>
+    <tr><td style="height: 20px;"></td></tr>
+    <tr>
+        <td>@Html.DisplayFor(model => model.News.Content)</td>
+    </tr>
+    <tr><td style="height: 20px;"></td></tr>
+</table>
+
+<h3>Comments section</h3>
+<div>
+    <table width="55%" cellpadding="4">
+        @if (Model.Comments.Count > 0)
+        {
+            foreach (var comment in Model.Comments)
+            {
+                var editLink = "/Comment/EditComment?commentId=" + comment.Id + "&newsId=" + comment.NewsId;
+                var deleteLink = "/Comment/DeleteComment?id=" + comment.Id;
+                <tr style="background-color: #f6f6f6;">
+                    <td colspan="2" style="border-top: 1px solid #e1e1e1; border-right: 1px solid #e1e1e1; border-left: 1px solid #e1e1e1;">
+                        @i.&nbsp;@comment.Author
+                        <div style="float: right;">@comment.Date</div>
+                        @{ 
+                            i++;
+                        }
+                    </td>
+                </tr>
+                <tr style="border: 1px solid #e1e1e1;">
+                    <td colspan="2">
+                        @comment.Content
+                    </td>
+                </tr>
+                if (loggedUser != null && (loggedUser.Id == comment.UserId || loggedUser.IsAdministrator))
+                {
+                    <tr style="background-color: #f6f6f6; border-bottom: 1px solid #e1e1e1; border-left: 1px solid #e1e1e1; border-right: 1px solid #e1e1e1;">
+                        <td align="right" style="padding-right: 13px;">
+                            <a href="@editLink">Edit</a>
+                        </td>
+                        @if (loggedUser.IsAdministrator)
+                        {
+                            <td align="right" width="10%" style="padding-right: 13px;">
+                                <a href="@deleteLink">Delete</a>
+                            </td>
+                        }
+                    </tr>
+                }
+                <tr style="height: 10px;"><td></td></tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td><i>There are not comments for this news yet!</i></td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+@if (loggedUser != null)
+{
+    using (Html.BeginForm("CreateComment", "Comment", FormMethod.Post))
+    {
+        <fieldset>
+            @Html.ValidationSummary(true);
+            @Html.HiddenFor(model => model.CommentViewModel.Author)
+            @Html.HiddenFor(model => model.CommentViewModel.Date)
+            @Html.HiddenFor(model => model.CommentViewModel.NewsId, new { @Value = Model.News.Id})
+            @Html.HiddenFor(model => model.CommentViewModel.UserId, new { @Value = loggedUser.Id})
+            @Html.HiddenFor(model => model.CommentViewModel.Author, new { @Value = loggedUser.FirstName + " " + loggedUser.LastName})
+            <table>
+                <tr>
+                    <td>@Html.EditorFor(model => model.CommentViewModel.Content)</td>
+                    <td>@Html.ValidationMessageFor(model => model.CommentViewModel.Content)</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="Submit" /></td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+}
+else
+{
+    Html.Raw("To submit a comment you need to ");
+    <a href="/Home/Login">Login</a>
+    @Html.Raw(" and if you don't have account ");
+    <a href="/Home/Register">Register now</a>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

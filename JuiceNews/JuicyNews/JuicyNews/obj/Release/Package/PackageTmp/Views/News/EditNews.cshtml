@@ -1,0 +1,37 @@
+﻿@model JuicyNews.ViewModels.News.NewsEditViewModel
+@{
+    ViewBag.Title = "Edit News";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditNews</h2>
+@using (Html.BeginForm("EditNews", "News", FormMethod.Post))
+{
+    <fieldset>
+        @Html.ValidationSummary(true);
+        @Html.HiddenFor(model => model.Id);
+        @Html.HiddenFor(model => model.UserId);
+        @Html.HiddenFor(model => model.DateOfPublishing);
+        @Html.HiddenFor(model => model.Author);
+        <legend>Edit News</legend>
+        <table>
+            <tr>
+                <td>Title</td>
+                <td>@Html.EditorFor(model => model.Title)</td>
+                <td>@Html.ValidationMessageFor(model => model.Title)</td>
+            </tr>
+            <tr>
+                <td>Content</td>
+                <td>@Html.EditorFor(model => model.Content)</td>
+                <td>@Html.ValidationMessageFor(model => model.Content)</td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Save" />&nbsp;&nbsp;&nbsp;<a href="/News/Index">Cancel</a></td>
+            </tr>
+        </table>
+    </fieldset>
+}
+    
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
